@@ -1,0 +1,58 @@
+#af-gl { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: block; pointer-events: none; background: var(--bg,#07090F) }
+#af-rail { position: fixed; inset-inline-end: max(4px,1vw); top: 50%; transform: translateY(-50%); z-index: 5; display: flex; flex-direction: column; transition: opacity .4s }
+#af-rail button { width: 44px; height: 44px; background: transparent; border: 0; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center }
+#af-rail button span { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--mute,#9AA6C2); background: transparent; transition: background .3s, border-color .3s, transform .3s }
+#af-rail button span.on { background: var(--acc,#C8FF3A); border-color: var(--acc,#C8FF3A); transform: scale(1.35) }
+#af-hint { position: fixed; inset-inline: 0; bottom: 24px; z-index: 5; text-align: center; color: var(--mute,#9AA6C2); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; pointer-events: none; transition: opacity .4s }
+#af-hint span { display: block; width: 1px; height: 28px; background: var(--acc,#C8FF3A); margin: 8px auto 0 }
+
+#af-story { position: relative; z-index: 1; color: var(--ink,#FFFFFF) }
+.scene { height: 100vh; min-height: 560px; display: flex; align-items: center; padding: 0 max(24px,6vw) }
+.scene.end { justify-content: flex-end }
+.scene.start { justify-content: flex-start }
+.scene-copy { max-width: min(34rem,100%); will-change: opacity, transform }
+.scene-copy.wide { max-width: min(40rem,100%) }
+.hero-eyebrow { margin: 0 0 20px; letter-spacing: 0.12em }
+.scene-h1 { margin: 0 0 24px; font-size: clamp(40px,5.2vw,80px); line-height: 1.04; letter-spacing: var(--ls); text-wrap: balance }
+.scene-h2 { margin: 0 0 20px; font-size: clamp(38px,5vw,76px); line-height: 1.04; letter-spacing: var(--ls); text-wrap: balance }
+.scene-p { margin: 0 0 28px; color: var(--mute,#9AA6C2); font-size: 19px; max-width: 29rem; text-wrap: pretty }
+.hero-p { margin-bottom: 32px; max-width: 34rem }
+.hero-btns { display: flex; flex-wrap: wrap; gap: 14px }
+.scene-tag { display: inline-flex; align-items: center; gap: 10px; color: var(--acc,#C8FF3A); font-weight: 600; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 18px }
+.scene-tag span { width: 8px; height: 8px; border-radius: 50%; background: #2E6BFF; box-shadow: 0 0 12px #2E6BFF }
+
+/* Téléphone ou écran en portrait : texte en bas, sur fond flouté */
+@media (max-width: 899px), (orientation: portrait) {
+  .scene { align-items: flex-end; padding: 0 16px 8vh }
+  .scene.end, .scene.start { justify-content: flex-start }
+  .scene-copy { background: var(--ghost,rgba(7,9,15,0.55)); padding: 20px; border-radius: 20px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px) }
+  .scene-h1 { font-size: clamp(30px,8.4vw,42px) }
+  .scene-h2 { font-size: clamp(28px,7.8vw,40px) }
+  .scene-p { font-size: 15px }
+  .hero-ghost { display: none }
+  #af-rail, #af-hint { display: none }
+}
+
+.home-after { position: relative; z-index: 1; background: var(--bg,#07090F) }
+.marquee { border-block: 1px solid var(--line,#1B2236); background: var(--bg,#07090F); overflow: hidden; direction: ltr }
+.marquee .mq { display: flex; width: max-content; padding: 22px 0 }
+.marquee .mq > span { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 28px; color: var(--mute,#9AA6C2); letter-spacing: -0.01em; padding: 0 28px; white-space: nowrap }
+.marquee .sep { color: var(--acc,#C8FF3A); margin-inline-start: 56px }
+.reel { padding: 96px 24px 24px; scroll-margin-top: 70px }
+.reel h2 { margin: 0 0 12px; font-size: clamp(38px,5.6vw,76px); letter-spacing: -0.03em; line-height: 1.1 }
+.reel p { margin: 0 0 36px; color: var(--mute,#9AA6C2); max-width: 640px }
+.reel-frame { position: relative; aspect-ratio: 16/9; border: 1px solid var(--line,#1B2236); border-radius: 24px; overflow: hidden; background: var(--card,#0E1220); box-shadow: 0 30px 80px rgba(0,0,0,0.55) }
+.reel-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0 }
+
+/* Révélation cinétique : les mots montent de la profondeur quand la scène devient active */
+.scene-h1, .scene-h2 { perspective: 800px }
+.scene-copy .w { display: inline-block; opacity: 0; transform: translateY(.55em) rotateX(-70deg) scale(.96); transform-origin: 50% 100%; filter: blur(10px); transition: opacity .7s, transform .9s cubic-bezier(.2,.85,.2,1), filter .8s; transition-delay: calc(var(--i) * 45ms) }
+.scene-copy.on .w { opacity: 1; transform: none; filter: none }
+.scene-copy > :not(h1):not(h2) { opacity: 0; transform: translateY(16px); transition: opacity .7s .35s, transform .9s .35s cubic-bezier(.2,.85,.2,1) }
+.scene-copy.on > :not(h1):not(h2) { opacity: 1; transform: none }
+.scene-copy .scene-tag span { animation: tagPulse 2.4s ease-in-out infinite }
+@keyframes tagPulse { 50% { box-shadow: 0 0 22px #2E6BFF, 0 0 0 6px rgba(46,107,255,.15) } }
+@media (prefers-reduced-motion: reduce) {
+  .scene-copy .w, .scene-copy > :not(h1):not(h2) { opacity: 1; transform: none; filter: none; transition: none }
+  .scene-copy .scene-tag span { animation: none }
+}

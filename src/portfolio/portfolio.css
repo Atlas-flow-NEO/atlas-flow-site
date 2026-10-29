@@ -1,0 +1,235 @@
+/* Portfolios de l'équipe (design du demo « Elena Voss »).
+   Tailwind v4 SANS preflight : seuls les tokens (layer theme) et les utilitaires générés
+   à partir de src/portfolio/** sont émis, le reste du site n'est pas touché.
+   Les utilitaires sont volontairement hors layer : sinon les règles globales non-layerées
+   du site (a { color }, etc.) les écraseraient dans le portfolio. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" source(none);
+@source "./";
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-fg: var(--fg);
+  --font-display: var(--font-brand-sans);
+  --font-body: var(--font-brand-sans);
+  --font-mono: var(--font-brand-mono);
+  --text-hero: var(--type-hero);
+  --text-section: var(--type-section);
+  --text-meta: var(--type-meta);
+  --radius-pill: 9999px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@font-face {
+  font-family: 'Host Grotesk';
+  src: url('/portfolio/fonts/host-grotesk.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens par personne ---------- */
+[data-tone] {
+  --paper: #07090F;
+  --paper-deep: #07090F;
+  --ink: #07090F;
+  --cream: #ffffff;
+  --fg: #ffffff;
+  --fg-muted: rgb(255 255 255 / 0.8);
+  --fg-faint: rgb(255 255 255 / 0.6);
+  --rule: rgb(255 255 255 / 0.2);
+  --focus: #ffffff;
+  --font-brand-sans: 'Host Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-brand-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --type-hero: clamp(2.75rem, 7.5vw, 11rem);
+  --type-section: clamp(2rem, 5.5vw, 6.5rem);
+  --type-lead: clamp(1.0625rem, 1.35vw, 1.5rem);
+  --type-body: clamp(0.9375rem, 1.05vw, 1.125rem);
+  --type-meta: clamp(0.75rem, 0.85vw, 0.9375rem);
+  --gutter: clamp(1.25rem, 4vw, 5rem);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --af-hdr: 69px; /* hauteur du header Atlas Flow (sticky) */
+}
+/* Aziz : noir / blanc, dégradés graphite */
+[data-tone="noir"] {
+  --accent: #ffffff; --accent-hot: #5A6172; --accent-red: #1A1E28; --accent-deep: #0E1117; --on-accent: #ffffff;
+  --grad-1: #6B7385; --grad-2: #4A5061; --grad-3: #2C313D; --grad-4: #474D5C; --grad-5: #343947;
+  --grad-6: #1C2029; --grad-7: #0F1218; --grad-8: #07090F; --grad-hot: #4A5061;
+  --focus: #ffffff;
+}
+/* Ammar : lemon */
+[data-tone="lemon"] {
+  --accent: #C8FF3A; --accent-hot: #C8FF3A; --accent-red: #6FA300; --accent-deep: #2E4A00; --on-accent: #07090F;
+  --grad-1: #A6DB24; --grad-2: #8CC21A; --grad-3: #456A00; --grad-4: #6E9C0C; --grad-5: #557E04;
+  --grad-6: #2C4400; --grad-7: #142008; --grad-8: #0B1405; --grad-hot: #C8FF3A;
+  --focus: #C8FF3A;
+}
+/* Aymen : bleu */
+[data-tone="bleu"] {
+  --accent: #2E6BFF; --accent-hot: #4F86FF; --accent-red: #1A47C9; --accent-deep: #0B2A8A; --on-accent: #ffffff;
+  --grad-1: #4F86FF; --grad-2: #2E6BFF; --grad-3: #1A3FB0; --grad-4: #2A5BE0; --grad-5: #1E48C4;
+  --grad-6: #0F2470; --grad-7: #0A1236; --grad-8: #060B1F; --grad-hot: #2E6BFF;
+  --focus: #7FA6FF;
+}
+
+/* ---------- Mini-preflight limité au portfolio (spécificité nulle : les utilitaires gagnent) ---------- */
+:where(.pf, .pf-portal) *,
+:where(.pf, .pf-portal) ::before,
+:where(.pf, .pf-portal) ::after { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; }
+:where(.pf, .pf-portal) :is(h1, h2, h3, h4, h5, h6) { font-size: inherit; font-weight: inherit; }
+:where(.pf, .pf-portal) :is(ul, ol) { list-style: none; }
+:where(.pf, .pf-portal) :is(img, svg, canvas) { display: block; max-width: 100%; }
+:where(.pf, .pf-portal) img { height: auto; }
+:where(.pf, .pf-portal) :is(button, input, textarea) { font: inherit; color: inherit; background: transparent; border-radius: 0; }
+:where(.pf, .pf-portal) button { cursor: pointer; }
+:where(.pf, .pf-portal) a { color: inherit; text-decoration: inherit; }
+:where(.pf, .pf-portal) a:hover { color: inherit; }
+:where(.pf, .pf-portal) [hidden] { display: none; }
+
+.pf {
+  position: relative;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--fg);
+  font-family: var(--font-brand-sans);
+  font-size: var(--type-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+.pf-portal { font-family: var(--font-brand-sans); color: var(--fg); }
+.pf :is(h1, h2, h3) { font-weight: 400; letter-spacing: normal; line-height: 1.02; text-wrap: balance; }
+.pf :is(h1, h2, h3, p, li, a) { overflow-wrap: anywhere; min-width: 0; }
+.pf p { text-wrap: pretty; }
+.pf ::selection { background: var(--accent); color: var(--ink); }
+.pf :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: clip; }
+
+/* Remplissage radial des cartes services */
+.pf .radial-mask-bg-fill {
+  --reveal: 0%;
+  -webkit-mask-image: radial-gradient(circle at center, black var(--reveal), transparent min(calc(var(--reveal) + 18%), 100%));
+  mask-image: radial-gradient(circle at center, black var(--reveal), transparent min(calc(var(--reveal) + 18%), 100%));
+}
+
+.pf .under-multi {
+  background-image: linear-gradient(currentcolor, currentcolor);
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  padding-bottom: 0.1em;
+  transition: background-size 0.35s var(--ease-out);
+}
+.pf .under-multi-parent:hover > .under-multi, .pf .under-multi:focus-visible { background-size: 100% 1px; }
+
+.pf .no-scrollbar { scrollbar-width: none; }
+.pf .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Marquee du hero : 4 plaques répétées 2 fois, période = 4 plaques + 4 gouttières */
+@keyframes pf-marquee-y { to { transform: translateY(-50.5353%); } }
+.pf .marquee-1 { will-change: transform; animation: 10s linear infinite pf-marquee-y; }
+.pf .marquee-2 { will-change: transform; animation: 18s linear infinite pf-marquee-y; }
+
+/* Pile d'images du portfolio : plaques 2..n parquées sous le cadre avant le JS */
+@media (min-width: 1025px) {
+  .pf [data-plate]:nth-child(n + 2) { transform: translateY(100%); }
+}
+
+/* Révélation du visuel hero (bande diagonale) */
+.pf .hero-mask-reveal {
+  --reveal: 125%;
+  -webkit-mask-image: linear-gradient(to top left, black var(--reveal), transparent calc(var(--reveal) + 25%));
+  mask-image: linear-gradient(to top left, black var(--reveal), transparent calc(var(--reveal) + 25%));
+}
+html.js .pf .hero-mask-reveal { opacity: 0; }
+
+/* Accordéon FAQ (remplace Radix) */
+.pf .acc-panel { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 0.5s var(--ease-out), opacity 0.5s var(--ease-out); }
+.pf .acc-panel[data-open="true"] { grid-template-rows: 1fr; opacity: 1; }
+.pf .acc-panel > div { overflow: hidden; }
+
+@media (min-width: 1025px) and (prefers-reduced-motion: reduce) {
+  .pf [data-plate]:nth-child(n + 2) { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf *, .pf *::before, .pf *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 150ms !important; }
+  .pf .marquee-1, .pf .marquee-2 { animation: none; }
+  html.js .pf .hero-mask-reveal { opacity: 1; }
+}
+
+/* ================= Personnalités (people.js → personality.key) ================= */
+.pf-fx > * { position: fixed; pointer-events: none; }
+.pf-progress { top: var(--af-hdr); left: 0; right: 0; height: 2px; z-index: 41; background: var(--accent); transform-origin: left center; transform: scaleX(0); }
+.pf .pf-mono { font-family: var(--font-brand-mono); }
+.pf .pf-tag { font-size: var(--type-meta); color: var(--fg-muted); }
+
+/* --- Aziz : éditorial / luxe --- */
+.pf[data-persona="editorial"] { --type-hero: clamp(3.2rem, 9vw, 13rem); --type-section: clamp(2.4rem, 7vw, 8rem); }
+.pf[data-persona="editorial"] :is(h1, h2, .pf-watermark) { font-family: 'Instrument Serif', Georgia, serif; letter-spacing: -0.015em; }
+.pf[data-persona="editorial"] h2 { font-size: 1.12em; }
+.pf[data-persona="editorial"] h1 { line-height: 0.98 !important; }
+.pf[data-persona="editorial"] .pf-tag { display: inline-flex; align-items: center; gap: 1em; text-transform: uppercase; letter-spacing: 0.32em; font-size: 0.75rem; }
+.pf[data-persona="editorial"] .pf-tag::before { content: ''; width: 3.5em; height: 1px; background: currentColor; }
+.pf .pf-watermark { position: absolute; left: 3vw; bottom: -3vw; z-index: 1; pointer-events: none; font-size: 27vw; line-height: 0.8; font-style: italic; color: transparent; -webkit-text-stroke: 1px rgb(255 255 255 / 0.16); white-space: nowrap; }
+.pf-grain { inset: -50%; z-index: 60; opacity: 0.08; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: pf-grain 0.9s steps(6) infinite; }
+@keyframes pf-grain { 0% { transform: translate(0, 0) } 33% { transform: translate(-6%, 4%) } 66% { transform: translate(5%, -7%) } 100% { transform: translate(-3%, 2%) } }
+.pf-spot { --x: -999; --y: -999; inset: 0; z-index: 59; opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(520px circle at calc(var(--x) * 1px) calc(var(--y) * 1px), rgb(255 255 255 / 0.09), transparent 65%); }
+
+/* --- Aymen : data / technique --- */
+.pf[data-persona="data"] { --type-hero: clamp(2.3rem, 5.8vw, 8.5rem); }
+.pf[data-persona="data"] :is(h1, h2) { font-family: var(--font-brand-mono); letter-spacing: -0.06em; font-weight: 500; }
+.pf[data-persona="data"] h2::before { content: '> '; color: var(--accent); }
+.pf[data-persona="data"] .pf-tag { font-family: var(--font-brand-mono); color: var(--accent); letter-spacing: 0.04em; }
+.pf[data-persona="data"] h3 { font-family: var(--font-brand-mono); letter-spacing: -0.03em; }
+.pf-scan { inset: 0; z-index: 1; opacity: 0.5;
+  background:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px),
+    linear-gradient(rgb(46 107 255 / 0.07) 1px, transparent 1px) 0 0 / 64px 64px,
+    linear-gradient(90deg, rgb(46 107 255 / 0.07) 1px, transparent 1px) 0 0 / 64px 64px; }
+.pf-scan::after { content: ''; position: absolute; inset-inline: 0; top: 0; height: 18vh; background: linear-gradient(transparent, rgb(46 107 255 / 0.08), transparent); animation: pf-scan 7s linear infinite; }
+@keyframes pf-scan { from { transform: translateY(-20vh) } to { transform: translateY(110vh) } }
+.pf .pf-glitch { animation: pf-glitch 0.6s steps(2) 1; }
+@keyframes pf-glitch {
+  0% { text-shadow: 3px 0 var(--accent), -3px 0 #C8FF3A; transform: skewX(-6deg) translateX(-4px); clip-path: inset(10% 0 55% 0); }
+  25% { text-shadow: -4px 0 var(--accent), 2px 0 #C8FF3A; transform: skewX(4deg) translateX(3px); clip-path: inset(45% 0 20% 0); }
+  50% { text-shadow: 2px 0 var(--accent), -2px 0 #fff; transform: none; clip-path: inset(0 0 70% 0); }
+  75% { text-shadow: -2px 0 var(--accent); clip-path: inset(30% 0 0 0); }
+  100% { text-shadow: none; transform: none; clip-path: inset(0); }
+}
+.pf .pf-ticker { overflow: hidden; border-block: 1px solid rgb(255 255 255 / 0.15); padding-block: 1rem; font-family: var(--font-brand-mono); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.08em; }
+.pf .pf-ticker-row { display: flex; width: max-content; gap: 3rem; animation: pf-ticker 38s linear infinite; }
+.pf .pf-ticker-row span { display: inline-flex; gap: 0.8rem; white-space: nowrap; }
+.pf .pf-ticker-row b { font-weight: 400; color: var(--accent); }
+@keyframes pf-ticker { to { transform: translateX(-50%); } }
+.pf .pf-spark { display: flex; align-items: flex-end; gap: 4px; height: 3.2vw; min-height: 34px; }
+.pf .pf-spark i { flex: 1; background: var(--accent); opacity: 0.55; transform-origin: bottom; border-radius: 1px; }
+.pf .pf-spark i:last-child { opacity: 1; }
+
+/* --- Ammar : produit / ludique --- */
+.pf[data-persona="product"] :is(h1, h2) { font-family: 'Bricolage Grotesque', var(--font-brand-sans); font-weight: 700; letter-spacing: -0.035em; }
+.pf[data-persona="product"] :is(.rounded-lg, .rounded-xl) { border-radius: 1.75rem; }
+.pf[data-persona="product"] [data-work-card] { transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.pf[data-persona="product"] [data-work-card]:hover { transform: translateY(-12px) rotate(-1deg); }
+.pf .pf-chip { display: inline-flex; align-items: center; margin-right: 0.5em; padding: 0.45em 1em; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-size: var(--type-meta); line-height: 1; animation: pf-bob 3.2s ease-in-out infinite; }
+.pf .pf-chip:nth-child(2) { animation-delay: -1s; } .pf .pf-chip:nth-child(3) { animation-delay: -2s; }
+.pf .pf-chip-sm { margin: 0; padding: 0.35em 0.8em; font-size: 0.75rem; animation: none; }
+@keyframes pf-bob { 50% { transform: translateY(-6px); } }
+.pf .pf-drag { cursor: grab; scroll-snap-type: x mandatory; user-select: none; }
+.pf .pf-drag.is-drag { cursor: grabbing; scroll-snap-type: none; }
+.pf .pf-win { flex: 0 0 42vw; scroll-snap-align: start; overflow: hidden; border-radius: 1.5rem; border: 1px solid rgb(255 255 255 / 0.15); background: #11141C; transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s; }
+.pf .pf-win:hover { transform: translateY(-10px) rotate(-1deg); border-color: var(--accent); }
+.pf .pf-win-bar { display: flex; align-items: center; gap: 6px; height: 34px; padding-inline: 14px; background: rgb(7 9 15 / 0.85); color: var(--fg-faint); }
+.pf .pf-win-bar i { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / 0.25); }
+.pf .pf-win-bar i:first-child { background: var(--accent); }
+.pf .pf-win-bar span { flex: 1; margin-inline: 12px 40px; padding: 3px 12px; border-radius: 999px; background: rgb(255 255 255 / 0.07); font-family: var(--font-brand-mono); font-size: 11px; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 1025px) { .pf .pf-win { flex-basis: 82vw; } .pf .pf-watermark { font-size: 34vw; bottom: auto; top: 18vh; } }
+@media (prefers-reduced-motion: reduce) { .pf .pf-ticker-row { animation: none; } .pf-grain, .pf-scan::after { animation: none; } }

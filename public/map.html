@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas Flow — Settat · Casablanca</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@500;600&display=swap" rel="stylesheet">
+<style>
+html,body,#map{margin:0;height:100%;background:#0E1220}
+.leaflet-container{background:#0E1220;font-family:'IBM Plex Sans','IBM Plex Sans Arabic',sans-serif}
+.leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.92) saturate(.55)}
+.pin{display:flex;align-items:center;gap:8px;white-space:nowrap;transform:translate(-11px,-11px)}
+.pin i{width:22px;height:22px;border-radius:50%;background:#C8FF3A;box-shadow:0 0 0 6px rgba(200,255,58,.25);flex:none}
+.pin b{background:#07090F;color:#fff;font-weight:600;font-size:14px;line-height:1;padding:8px 12px;border-radius:10px;border:1px solid #2A3550}
+.leaflet-control-attribution{background:rgba(7,9,15,.85)!important;color:#9AA6C2!important}
+.leaflet-control-attribution a{color:#C8FF3A!important}
+.leaflet-bar a{background:#0E1220!important;color:#fff!important;border-color:#2A3550!important;width:36px!important;height:36px!important;line-height:36px!important}
+.light,.light body,.light #map,.light .leaflet-container{background:#EEF1F8}
+.light .leaflet-tile-pane{filter:saturate(.7)}
+.light .pin i{background:#4A7A00;box-shadow:0 0 0 6px rgba(74,122,0,.2)}
+.light .pin b{background:#fff;color:#0A1633;border-color:#DDE3EE}
+.light .leaflet-control-attribution{background:rgba(255,255,255,.88)!important;color:#4A5878!important}
+.light .leaflet-control-attribution a{color:#1F5BFF!important}
+.light .leaflet-bar a{background:#fff!important;color:#0A1633!important;border-color:#DDE3EE!important}
+</style>
+</head>
+<body>
+<div id="map" role="region" aria-label="Settat, Casablanca"></div>
+<script>
+const qs = new URLSearchParams(location.search), lang = qs.get('lang') || 'fr';
+if (qs.get('theme') === 'light') document.documentElement.classList.add('light');
+const N = { fr: ['Casablanca', 'Settat'], en: ['Casablanca', 'Settat'], ar: ['الدار البيضاء', 'سطات'] }[lang] || ['Casablanca', 'Settat'];
+const C = { casablanca: [33.5731, -7.5898], settat: [33.0010, -7.6166] };
+const both = L.latLngBounds([C.casablanca, C.settat]).pad(0.4);
+const map = L.map('map', { scrollWheelZoom: false, dragging: !L.Browser.mobile, tap: false }).fitBounds(both);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© OpenStreetMap contributors' }).addTo(map);
+const icon = t => L.divIcon({ className: '', html: '<div class="pin"><i></i><b>' + t + '</b></div>', iconSize: [0, 0] });
+L.marker(C.casablanca, { icon: icon(N[0]), keyboard: false }).addTo(map);
+L.marker(C.settat, { icon: icon(N[1]), keyboard: false }).addTo(map);
+function go() { const h = location.hash.slice(1); if (C[h]) map.flyTo(C[h], 12, { duration: 1 }); else map.flyToBounds(both, { duration: 1 }); }
+addEventListener('hashchange', go);
+if (C[location.hash.slice(1)]) map.setView(C[location.hash.slice(1)], 12);
+</script>
+</body>
+</html>
